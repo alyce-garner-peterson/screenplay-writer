@@ -1,6 +1,6 @@
 # Alyce Garner Peterson - An A.I fine tuned screenplay writer
 
-Visit https://alyce-garner-peterson.github.io/ for to see the website.
+Visit https://alyce-garner-peterson.github.io/ for our website.
 
 ## Setting up the demo 
 * Use the link obtained after running the server listed as main Node server to see the frontend.
