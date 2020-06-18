@@ -1,5 +1,7 @@
 # Alyce Garner Peterson - An A.I fine tuned screenplay writer
 
+Visit https://alyce-garner-peterson.github.io/ for to see the website.
+
 ## Setting up the demo 
 * Use the link obtained after running the server listed as main Node server to see the frontend.
 * Then run the individual sub servers as per your requirements and provide the URL of main Node server when prompted so that they sub servers are connected to the Node server.
