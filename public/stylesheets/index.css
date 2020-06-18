@@ -1,0 +1,15 @@
+.loader {
+    background-image: url(../images/loader.svg);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+}
+
+.loader>* {
+    visibility: hidden;
+}
+
+.fullscreen{
+    min-height: 100vh;
+}

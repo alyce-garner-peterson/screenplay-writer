@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Alyce: An A.I fine tuned Screenplay Writer</title>
+  <link type="text/css" href="stylesheets/bootstrap.min.css" rel="stylesheet">
+  <link type="text/css" href="stylesheets/timeline.css" rel="stylesheet">
+  <link type="text/css" href="stylesheets/index.css" rel="stylesheet">
+</head>
+
+<body class="loader">
+  <!-- Header Section -->
+  <header>
+    <div class="container-fluid">
+      <div class="row" style="background-color: #007bff;">
+        <div class="col-12">
+          &nbsp;
+          <h2 class="text-center" style="color: white;">Alyce : An A.I fine tuned screenplay Writer</h2>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Input Section -->
+  <section class="fullscreen">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          &nbsp;
+          <form>
+            <div class="form-group">
+              <label for="story_input">Story Input Section</label>
+              <textarea class="form-control" id="story_input" style="min-height: 50vh;" placeholder="Paste your story here!..."></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 offset-lg-2 py-1">
+          <button type="button" id="story_fetch_button" class="btn btn-primary btn-lg btn-block">Fetch Sample</button>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 py-1">
+          <button type="button" id="story_input_button" class="btn btn-primary btn-lg btn-block">Send</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="outputsec" >
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<hr/>
+			</div>
+		</div>
+	</div>
+  </section>
+  <!-- Content Output Section -->
+  <section class="fullscreen">
+    <div class="paragraph__content-container">
+      <h1>Process Overview</h1>
+      <div class="paragraph__timeline">
+        <div class="paragraph__timeline__container">
+          <div id="cid0" class="paragraph__timeline__entry --entry-1 --is-pending">
+            <span></span>
+            <div class="paragraph__timeline__content-container">
+              <div class="paragraph__timeline__content">
+                <div class="paragraph__timeline__title">Response #01</div>
+                <div id="pid0" class="paragraph__timeline__info">...</div>
+                <div class="paragraph__timeline__name">- Alyce Server</div>
+                <div class="paragraph__timeline__date-time">
+                  <span class="paragraph__timeline__date">Step #1</span>
+                  <span class="paragraph__timeline__time">Story<br />Received</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="cid1" class="paragraph__timeline__entry --entry-1 --is-pending">
+            <span></span>
+            <div class="paragraph__timeline__content-container">
+              <div class="paragraph__timeline__content">
+                <div class="paragraph__timeline__title">Response #02</div>
+                <div id="pid1" class="paragraph__timeline__info">...</div>
+                <div class="paragraph__timeline__name">- Alyce Server</div>
+                <div class="paragraph__timeline__date-time">
+                  <span class="paragraph__timeline__date">Step #2</span>
+                  <span class="paragraph__timeline__time">Co-reference<br />Resolution</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="cid2" class="paragraph__timeline__entry --entry-1 --is-pending">
+            <span></span>
+            <div class="paragraph__timeline__content-container">
+              <div class="paragraph__timeline__content">
+                <div class="paragraph__timeline__title">Response #03</div>
+                <div id="pid2" class="paragraph__timeline__info">...</div>
+                <div class="paragraph__timeline__name">- Alyce Server</div>
+                <div class="paragraph__timeline__date-time">
+                  <span class="paragraph__timeline__date">Step #3</span>
+                  <span class="paragraph__timeline__time">Plot<br />Generation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="cid3" class="paragraph__timeline__entry --entry-1 --is-pending">
+            <span></span>
+            <div class="paragraph__timeline__content-container">
+              <div class="paragraph__timeline__content">
+                <div class="paragraph__timeline__title">Response #04</div>
+                <div id="pid3" class="paragraph__timeline__info">...</div>
+                <div class="paragraph__timeline__name">- Alyce Server</div>
+                <div class="paragraph__timeline__date-time">
+                  <span class="paragraph__timeline__date">Step #4</span>
+                  <span class="paragraph__timeline__time">Audio<br />Generation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer></footer>
+
+  <script src="javascripts/jquery-3.5.1.min.js"></script>
+  <script src="javascripts/popper.js"></script>
+  <script src="javascripts/bootstrap.min.js"></script>
+  <script type="text/javascript" src="javascripts/socket.io.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+  <!-- <script src="javascripts/timeline.js"></script> -->
+  <script>
+    $(document).ready(function () {
+      $("body").removeClass('loader');
+      var socket = io.connect();
+      var curphase = 0;
+      var storyList;
+      tippy('.paragraph__timeline:not(.--is-horizontal) .paragraph__timeline__entry.--is-completed', {
+        content: 'Completed',
+        placement: 'top'
+      })
+      tippy('.paragraph__timeline:not(.--is-horizontal) .paragraph__timeline__entry.--is-inprogress', {
+        content: 'In Progress',
+        placement: 'top'
+      })
+      tippy('.paragraph__timeline:not(.--is-horizontal) .paragraph__timeline__entry.--is-pending', {
+        content: 'Pending',
+        placement: 'top'
+      })
+
+      $("#story_fetch_button").click(function(){
+        $.ajax({url: "story/story01.txt", success: function(result){
+          $("#story_input").html(result);
+        }});
+      });
+
+      socket.on('connect', function () {
+        var story_button = $('#story_input_button').on('click', function (e) {
+          let story_input = $('#story_input').val()
+          if (story_input != "") {
+            //$('body').scrollTo('#outputsec');
+            $("#outputsec").get(0).scrollIntoView({behavior: "smooth"});
+            socket.emit('data_to_server', {
+              message: story_input
+            })
+            $('#story_input').val("")
+            if (curphase <= 3) {
+              $("#cid" + curphase).removeClass("--is-pending");
+              $("#cid" + curphase).addClass("--is-inprogress");
+              $("#pid" + curphase).html("<img src=\"images/loader.svg\" height=\"20px\"/><br/>");
+            }
+          } else
+            alert("Please Enter Some Data before Sending!....")
+        })
+      })
+
+      socket.on('data_to_client', function (msg) {
+        $("#cid" + curphase).removeClass("--is-inprogress");
+        $("#cid" + curphase).addClass("--is-completed");
+        $("#pid" + curphase).html("");
+
+        /*if (typeof msg.message !== 'undefined'){
+          $("#pid"+curphase).append("<h6>New Notification</h6>&emsp;MESSAGE : " + msg.message)
+          console.log(msg.message)
+        }
+        else {
+          console.log("Some data was received!.....")
+          console.log(msg)
+          return
+        }
+        if (typeof msg.status !== 'undefined'){
+          $("#pid"+curphase).append("<br/>&emsp;STATUS : " + msg.status)
+        }*/
+        if (typeof msg.data !== 'undefined') {
+          //$("#pid"+curphase).append("<br/>&emsp;DATA : " + msg.data)
+          var Obj = JSON.parse(msg.data)
+          if (Obj[0][0] == "None") {
+            $("#pid" + curphase).append("<br/>Input Received and Processing started!...")
+          } else if (curphase == 3) {
+            //for(k=0;k<storyList.length;++k){
+
+            //$("#pid"+curphase).append("<br/> --> <audio style=\"height: 20px;\" src='audio/" + Obj[k]+"' controls></audio>")
+            //}
+            audiolist = Obj
+            Obj = storyList
+            var scene_no = 1
+            var g = 0
+            for (k = 0; k < Obj.length; ++k) {
+              if (Obj[k][1] == "NEWLINE") {
+                $("#pid" + curphase).append("<br/>&nbsp;<br/>")
+              } else if (Obj[k][1] == "DIALOGUE") {
+                if (k - 1 >= 0) {
+                  if (Obj[k - 1][1] != "DIALOGUE" && Obj[k - 1][1] != "NEWLINE")
+                    $("#pid" + curphase).append("<br/><br/>");
+                  else
+                    $("#pid" + curphase).append("<br/>");
+                }
+                $("#pid" + curphase).append("<b>" + Obj[k][4] + " : </b>" + Obj[k][5] +
+                  "&nbsp;<audio style=\"height: 10px;\" src='audio/" + audiolist[k] +
+                  "' controls></audio>&nbsp;")
+              } else if (Obj[k][1] == "PLOT" && Obj[k][0].length > 0) {
+                if (k - 1 >= 0) {
+                  if (Obj[k - 1][1] != "PLOT" && Obj[k - 1][1] != "NEWLINE")
+                    $("#pid" + curphase).append("<br/>");
+                }
+                $("#pid" + curphase).append("<h3>SCENE : " + scene_no + "</h3>")
+                scene_no = scene_no + 1
+                $("#pid" + curphase).append("<font color=\"red\">" + Obj[k][0] + "</font>" +
+                  "&nbsp;<audio style=\"height: 10px;\" src='audio/" + audiolist[k] +
+                  "' controls></audio>&nbsp;")
+              } else {
+                if (k - 1 >= 0) {
+                  if (Obj[k - 1][1] != "NARRATION" && Obj[k - 1][1] != "NEWLINE")
+                    $("#pid" + curphase).append("<br/>");
+                }
+                $("#pid" + curphase).append("<font color=\"green\">" + Obj[k][0] + "</font>" +
+                  "&nbsp;<audio style=\"height: 10px;\" src='audio/" + audiolist[k] +
+                  "' controls></audio>&nbsp;")
+              }
+              //$("#pid"+curphase).append("<br/> --> " + Obj[k])
+            }
+          } else {
+            var scene_no = 1
+            storyList = Obj
+            for (k = 0; k < Obj.length; ++k) {
+              if (Obj[k][1] == "NEWLINE") {
+                $("#pid" + curphase).append("<br/>&nbsp;<br/>")
+              } else if (Obj[k][1] == "DIALOGUE") {
+                if (k - 1 >= 0) {
+                  if (Obj[k - 1][1] != "DIALOGUE" && Obj[k - 1][1] != "NEWLINE")
+                    $("#pid" + curphase).append("<br/><br/>");
+                  else
+                    $("#pid" + curphase).append("<br/>");
+                }
+                $("#pid" + curphase).append("<b>" + Obj[k][4] + " : </b>" + Obj[k][5])
+              } else if (Obj[k][1] == "PLOT" && Obj[k][0].length > 0) {
+                if (k - 1 >= 0) {
+                  if (Obj[k - 1][1] != "PLOT" && Obj[k - 1][1] != "NEWLINE")
+                    $("#pid" + curphase).append("<br/>");
+                }
+                $("#pid" + curphase).append("<h3>SCENE : " + scene_no + "</h3>")
+                scene_no = scene_no + 1
+                $("#pid" + curphase).append("<font color=\"red\">" + Obj[k][0] + "</font>")
+              } else {
+                if (k - 1 >= 0) {
+                  if (Obj[k - 1][1] != "NARRATION" && Obj[k - 1][1] != "NEWLINE")
+                    $("#pid" + curphase).append("<br/>");
+                }
+                $("#pid" + curphase).append("<font color=\"green\">" + Obj[k][0] + "</font>")
+              }
+              //$("#pid"+curphase).append("<br/> --> " + Obj[k])
+            }
+          }
+        }
+        curphase = curphase + 1
+        if (curphase <= 3) {
+          $("#cid" + curphase).removeClass("--is-pending");
+          $("#cid" + curphase).addClass("--is-inprogress");
+          $("#pid" + curphase).html("<img src=\"images/loader.svg\" height=\"20px\"/><br/>");
+        }
+        tippy('.paragraph__timeline:not(.--is-horizontal) .paragraph__timeline__entry.--is-completed', {
+          content: 'Completed',
+          placement: 'top'
+        })
+        tippy('.paragraph__timeline:not(.--is-horizontal) .paragraph__timeline__entry.--is-inprogress', {
+          content: 'In Progress',
+          placement: 'top'
+        })
+        tippy('.paragraph__timeline:not(.--is-horizontal) .paragraph__timeline__entry.--is-pending', {
+          content: 'Pending',
+          placement: 'top'
+        })
+      })
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+neuralcoref
+spacy==2.1.0
+flask
+flask_socketio
+torch
+nltk
+colorama
+transformers
+torchtext

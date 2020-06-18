@@ -1,0 +1,240 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+@import url("https://static.fontawesome.com/css/fontawesome-app.css");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+* {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.paragraph__content-container {
+  max-width: 75em;
+  margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.paragraph__content-container.--is-full-width {
+  max-width: 100%;
+}
+
+.paragraph__timeline {
+  overflow: hidden;
+  padding-left: 60px;
+}
+.paragraph__timeline .paragraph__timeline__container {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  transition: .2s;
+  top: 0;
+}
+.paragraph__timeline .paragraph__timeline__container:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 100%;
+  border: 1px solid #1c1c1c;
+  position: absolute;
+  top: 0;
+  left: 30px;
+  transition: .2s;
+}
+.paragraph__timeline .paragraph__timeline__container:hover .paragraph__timeline__content-container {
+  opacity: .5 !important;
+}
+.paragraph__timeline .paragraph__timeline__container:hover .paragraph__timeline__content-container:hover {
+  opacity: 1 !important;
+}
+
+.paragraph__timeline__content-container {
+  transition: .2s;
+}
+
+.paragraph__timeline__entry {
+  position: relative;
+}
+.paragraph__timeline__entry > span {
+  content: "";
+  display: block;
+  width: 0;
+  height: 100%;
+  border: 1px solid #1c1c1c;
+  position: absolute;
+  top: 0;
+  color: #fff;
+  left: 30px;
+}
+.paragraph__timeline__entry > span:before, .paragraph__timeline__entry > span:after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: grey;
+  position: absolute;
+  left: -9.5px;
+  font-family: 'FontAwesome';
+  line-height: 1.3;
+  text-align: center;
+}
+.paragraph__timeline__entry > span:before {
+  top: -10px;
+}
+.paragraph__timeline__entry > span:after {
+  top: 95%;
+}
+.paragraph__timeline__entry.--is-completed > span:before, .paragraph__timeline__entry.--is-completed > span:after {
+  content: "\f00c";
+  background: rgb(35, 241, 39);
+}
+.paragraph__timeline__entry.--is-inprogress > span:before, .paragraph__timeline__entry.--is-inprogress > span:after {
+  content: "\f141";
+  background: #00AEEF;
+}
+.paragraph__timeline__entry:focus {
+  outline: none;
+}
+
+.paragraph__timeline__content {
+  margin: 20px 0 60px 60px;
+  position: relative;
+  padding: 20px;
+  background: #00AEEF;
+  color: #fff;
+  border-radius: 5px;
+  line-height: 20px;
+  width: auto;
+  box-shadow: 0 0 11px 0 rgba(150, 150, 150, 0.15);
+  transition: .2s;
+}
+.paragraph__timeline__content:focus {
+  outline: none;
+}
+.paragraph__timeline__content:after {
+  content: "";
+  border-style: solid;
+  border-color: transparent;
+  position: absolute;
+  border-width: 15px 20px 15px 0;
+  border-right-color: #00AEEF;
+  left: -15px;
+  top: 10px;
+  z-index: 0;
+}
+
+.paragraph__timeline__title {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.paragraph__timeline__name {
+  margin-top: 10px;
+  font-style: italic;
+  text-align: right;
+}
+
+.paragraph__timeline__date-time span {
+  position: absolute;
+  left: -117px;
+  color: #1c1c1c;
+  font-size: 0.8125rem;
+  font-weight: bold;
+}
+.paragraph__timeline__date-time span.paragraph__timeline__date {
+  top: -11px;
+}
+.paragraph__timeline__date-time span.paragraph__timeline__time {
+  top: 10px;
+  font-size: 0.6875rem;
+  color: #aaa;
+  left: -117px;
+}
+
+@media (min-width: 992px) {
+  .paragraph__timeline.--is-horizontal {
+    padding-left: 9px;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__container {
+    display: flex;
+    flex-direction: row;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__container:before {
+    width: 100%;
+    height: 0;
+    left: 0;
+    top: 20px;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry {
+    margin: 20px 5px 60px 60px;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry:first-child {
+    margin-left: 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry > span {
+    width: 100%;
+    left: auto;
+    height: 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry > span:before {
+    top: -10px;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry > span:after {
+    top: -10px;
+    left: auto;
+    right: -6px;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry:first-child .paragraph__timeline__content {
+    margin-left: 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry:last-child .paragraph__timeline__content {
+    margin-right: 8px;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__entry .paragraph__timeline__content-container {
+    display: flex;
+    height: 100%;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__content {
+    display: inline-block;
+    margin: 40px 0 0 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__content:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-top: 2px dashed #1c1c1c;
+    top: -25px;
+    left: 50%;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__content:last-child:before {
+    border: 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__content:after {
+    content: "";
+    border-style: solid;
+    border-color: transparent;
+    position: absolute;
+    border-width: 0 20px 20px 20px;
+    border-bottom-color: #00AEEF;
+    right: 15px;
+    left: auto;
+    top: -10px;
+    z-index: 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__date-time {
+    position: absolute;
+    bottom: auto;
+    top: -1.5em;
+    left: 20px;
+    width: 100%;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__date-time .paragraph__timeline__date {
+    left: 0;
+    top: 0;
+  }
+  .paragraph__timeline.--is-horizontal .paragraph__timeline__date-time .paragraph__timeline__time {
+    left: 65px;
+    top: 2px;
+  }
+}
